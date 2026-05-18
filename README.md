@@ -19,6 +19,17 @@ the command is actually who it says it is.
 RealAgentID is the missing trust layer - cryptographic identity for verification for AI agents  that operates at subsecond latency, invisible to your
 real time inference pipeline.
 
+## Why Cryptographic Trust - Not Platform Trust
+
+Every major platform will tell you their agents are governed. None of them can prove it without asking you to trust their infrastructure first. 
+
+RealAgenID is different. The identity verification is cyrptographic - the math either checks out or it doesn't. No vendor. No cloud console. No MCP workaround required.
+
+Platforms like Oracle and Gemini Enterprise govern what agents do inside their cloud. 
+
+RealAgentID governs what agents *are*
+- cryptographically, anywhere.*
+
 ## What It Does
 
 - Generates Ed25519 cryptographic keypairs per agent
@@ -78,6 +89,10 @@ Redis
 sudo apt install redis-server -y
 sudo service redis start
 redis-cli ping
+
+## First Production Implementation
+
+[TrailStax](https://github.com/TrailStax/StaxVault) is the first production implementation of RealAgentID - append-only, hash-chained audit trails and code commit registry for AI agents, built on this protocol.
 
 ## Licensing
 
