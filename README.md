@@ -5,7 +5,7 @@
 **Blockchain-grade security at inference speed.**
 
 The trust layer for AI agent networks. RealAgentID gives every AI agent a cryptographic identity - preventing spoofing, replay attacks, and unauthorized
-commands before the reach your infrastructure.
+commands before they reach your infrastructure.
 
 > "As agentic AI redefines what's possible, the boldest organizations will set the pace of transformation." -Databricks, 2026 State of AI Agents
 
