@@ -47,3 +47,8 @@
 {"timestamp": "2026-05-03T01:54:05.504557+00:00", "event": "signature_verified", "agent_id": "sdk_test_agent", "channel": "signal:btc", "result": "VALID", "message_id": "2420cae2-8386-4261-bdc4-3c41a25451a1", "latency_ms": 0.08}
 {"timestamp": "2026-05-03T01:56:56.086964+00:00", "event": "signature_verified", "agent_id": "test_agent", "channel": "tasks:default", "result": "VALID", "message_id": "14a4f148-8414-4bea-adba-aa7965574fcf", "latency_ms": 0.185}
 {"timestamp": "2026-05-03T01:56:56.225256+00:00", "event": "signature_verified", "agent_id": "sdk_test_agent", "channel": "signal:btc", "result": "VALID", "message_id": "1b19b13c-9022-48a2-ac91-43796c892aa9", "latency_ms": 0.081}
+{"timestamp": "2026-05-17T02:25:37.715671+00:00", "event": "test_event", "agent_id": "agent-001", "channel": "neo4j_test", "result": "success"}
+{"timestamp": "2026-05-17T02:32:23.325018+00:00", "event": "test_event", "agent_id": "agent-001", "channel": "neo4j_test", "result": "success"}
+{"timestamp": "2026-05-22T12:45:57.456337+00:00", "event": "attestation_bundle_created", "agent_id": "coordinator", "channel": "tasks:worker-1", "result": "VALID", "message_id": "e8600e11-a253-460a-ae3e-07af10ec5f56"}
+{"timestamp": "2026-05-22T12:56:02.683660+00:00", "event": "attestation_bundle_created", "agent_id": "coordinator", "channel": "tasks:worker-1", "result": "VALID", "message_id": "f3924974-f00f-4153-a3b7-d93772bdc279"}
+{"timestamp": "2026-05-22T12:56:02.738388+00:00", "event": "attestation_bundle_verified", "agent_id": "coordinator", "channel": "tasks:worker-1", "result": "VALID", "message_id": "f3924974-f00f-4153-a3b7-d93772bdc279"}
