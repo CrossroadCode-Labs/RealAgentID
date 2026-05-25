@@ -1,19 +1,15 @@
-# RealAgentID Audit Module
-# Compliance note: This module logs metadata only by default.
-# Payload content is never logged unless explicitly enabled.
-# See COMPLIANCE.md for framework mappings and data retention guidance
-# Designed toward: SOC 2, GDPR, HIPAA, NIST AI RMF, EU AI Act
-
-import json
-import time
 import os
 import sys
+import json
 from datetime import datetime, timezone
+from pathlib import Path
 
-sys.path.insert(0, os.path.dirname(__file__))
-import db
+# Import core local SQLite db
+from core import db as local_db
 
-db.init_db()
+# Import Neo4j db from root
+sys.path.insert(0, str(Path(__file__).parent.parent))
+import db as neo4j_db
 
 LOG_FILE = "./logs/realagentid_audit.log"
 
@@ -35,7 +31,7 @@ def write_log(event: str, agent_id: str, channel: str, result: str, reason=None,
     line = json.dumps(entry)
     with open(LOG_FILE, "a") as f:
         f.write(line + "\n")
-    db.insert_event(
+    local_db.insert_event(
         timestamp=entry["timestamp"],
         event=entry["event"],
         agent_id=entry["agent_id"],
@@ -45,6 +41,20 @@ def write_log(event: str, agent_id: str, channel: str, result: str, reason=None,
         reason=entry.get("reason"),
         latency_ms=entry.get("latency_ms")
     )
+    try:
+        with neo4j_db.driver.session() as session:
+            session.run("""
+                MERGE (a:Agent {agent_id: $agent_id})
+                CREATE (e:AuditEntry {
+                    timestamp: $timestamp,
+                    event: $event,
+                    result: $result,
+                    channel: $channel
+                })
+                CREATE (a)-[:SIGNED]->(e)
+            """, **entry)
+    except Exception as ex:
+        print(f"[Neo4j] Mirror failed: {ex}", file=sys.stderr)
     print(f"[RealAgentID AUDIT] {result} | {event} | agent: {agent_id}", file=sys.stderr)
 
 def read_log():
