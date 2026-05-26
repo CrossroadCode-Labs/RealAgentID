@@ -1,4 +1,4 @@
-import haslib
+import hashlib
 import time
 import sys
 import json
