@@ -1,3 +1,5 @@
+import haslib
+import time
 import sys
 import json
 import redis
@@ -59,6 +61,41 @@ def require_human_approval_for_root(
           f"by '{approved_by}'.")
     return True
 
+# Registry chain state
+_registry_last_hash = "0" * 64
+
+def _compute_registry_hash(entry: dict) -> str:
+    """
+    Compute SHA256 hash of a registry entry.
+    Links entries into a tamper-evident chain.
+    """
+    encoded = json.dumps(entry, sort_keys=True).encode()
+    return hashlib.sha256(encoded).hexdigest()
+
+def _append_registry_chain(agent_id: str, event: str, data: dict) -> str:
+    """
+    Append a registry event to the hash chain.
+    Every registration, revocation, and modification
+    is chained — tampering breaks the chain.
+    """
+    global _registry_last_hash
+
+    entry = {
+        "previous_hash": _registry_last_hash,
+        "timestamp": int(time.time()),
+        "agent_id": agent_id,
+        "event": event,
+        "data": data
+    }
+
+    current_hash = _compute_registry_hash(entry)
+    entry["hash"] = current_hash
+    _registry_last_hash = current_hash
+
+    # Store chain entry in Redis
+    r.lpush("registry_chain", json.dumps(entry))
+    return current_hash
+
 def register_agent_from_key(
     agent_id: str,
     public_key_pem_path: str,
@@ -86,6 +123,7 @@ def register_agent_from_key(
     ).hex()
     data = {"public_key": public_key_hex, "role": role}
     r.setex(f"agent:{agent_id}", AGENT_TTL, json.dumps(data))
+    _append_registry_chain(agent_id, "registered", {"role": role})
     print(f"[+] Agent '{agent_id}' registered in Redis as role='{role}' (TTL: {AGENT_TTL}s).")
 
 def get_public_key(agent_id):
@@ -105,6 +143,7 @@ def revoke_agent(agent_id):
     if r.exists(key):
         r.delete(key)
         print(f"[!] Agent '{agent_id}' revoked and removed from registry.")
+        _append_registry_chain(agent_id, "revoked", {})
         return True
     return False
 
