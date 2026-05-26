@@ -17,7 +17,7 @@ AGENT_TTL = 86400
 REPLAY_TTL = 300
 
 # Valid agent roles
-VALID_ROLES = ["admin", "worker", "readonly", "signal_gen", "risk_guard", "order_router", "compliance_log"]
+VALID_ROLES = ["admin", "worker", "readonly", "signal_gen", "risk_guard", "order_router", "compliance_log", "blueprint_agent"]
 
 # Role permissions - which roles can send messages on which channels
 ROLE_PERMISSIONS = {
@@ -28,6 +28,7 @@ ROLE_PERMISSIONS = {
     "risk_guard":     ["risk:*", "signal:*"],
     "order_router":   ["order:*", "risk:*"],
     "compliance_log": ["audit:*", "order:*", "signal:*", "risk:*"],
+    "blueprint_agent":["blueprint:*", "audit:*"],
 }
 
 # --- Connection pool ---
