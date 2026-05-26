@@ -94,7 +94,24 @@ redis-cli ping
 
 [TrailStax](https://github.com/TrailStax/StaxVault) is the first production implementation of RealAgentID - append-only, hash-chained audit trails and code commit registry for AI agents, built on this protocol.
 
+## Post-Quantum Cryptography
+
+RealAgentID implements NIST-standardized post-quantum cryptography via liboqs.
+
+- **Signing**: ML-DSA-65 (FIPS 204) - quantum-resistant digital signatures for agent identity
+- **Key Encapsulation**: Kyber512 - quantum-resistant key exchange for vault encryption
+- **Security level**: AES-192 / 3072-bit RSA equivalent in classical security
+
+To enable PQC, install liboqs and the Python wrapper:
+
+'''bash
+sudo apt install cmake ninja-build libssl-dev -y
+git clone https://github.com/open-quantum-safe/liboqs.git
+cd liboqs && mkdir build && cd build
+cmake -Gninja .. -DBUILD_SHARED_LIBS=ON && ninja && sudo ninja install && sudo ldconfig
+cd ~ && git clone https://github.com/open-quantum-safe/liboqs-python.git
+cd liboqs-python && sudo pip install . --break-system-packages
 ## Licensing
 
 RealAgentID core is MIT licensed and free forever. Enterprise adapters and the Control Center are available under a commercial license. 
-Contact support@realagentid.io for enterprise inquiries.
+Contact RealAgentID@proton.me for enterprise inquiries.
