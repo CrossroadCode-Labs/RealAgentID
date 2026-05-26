@@ -10,6 +10,7 @@ from core.lineage import register_lineage, get_lineage, verify_lineage, revoke_t
 from core.tool_registry import register_tool, get_tool, verify_tool_access, record_tool_call, detect_anomaly, list_tools
 from core.vault import seal, unseal, revoke_vault, list_vault
 from core.sandbox import spawn_sandbox, get_sandbox_log, list_sandboxes
+from ragid_gate.provenance import register_data_provenance, verify_data_provenance, get_provenance_record, list_provenance
 
 class Agent:
     def __init__(self, name: str, role: str = "worker", keys_dir: str = "./keys"):
@@ -93,3 +94,15 @@ class Agent:
 
     def list_sandboxes(self):
         return list_sandboxes(self.name)
+
+    def register_data_provenance(self, source_url: str, data: str, commit_to_trail: callable):
+        return register_data_provenance(self.name, source_url, data, commit_to_trail)
+
+    def verify_data_provenance(self, data: str, commit_to_trail: callable):
+        return verify_data_provenance(self.name, data, commit_to_trail)
+
+    def get_provenance_record(self, data_hash: str):
+        return get_provenance_record(data_hash)
+
+    def list_provenance(self):
+        return list_provenance(self.name)
