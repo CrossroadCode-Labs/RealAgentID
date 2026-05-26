@@ -48,7 +48,7 @@ class Agent:
         return revoke_tree(self.name)
 
     def register_federated_root(self, org_name: str, scope_limit: list):
-        return register_federated_root(self.name, org_name, scope_limit):
+        return register_federated_root(self.name, org_name, scope_limit)
 
     def is_federated_root(self):
         return is_federated_root(self.name)
