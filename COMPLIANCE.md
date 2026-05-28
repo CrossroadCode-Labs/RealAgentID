@@ -65,6 +65,24 @@ Core principles:
 | Measure | Audit log with verification metrics | ✅ v0.1 |
 | Manage | Tamper detection and rejection | ✅ v0.1 |
 
+## POST-QUANTUM-Cryptography Compliance
+
+### NIST FIPS 204 (ML-DSA)
+
+| Agent identity signatures use ML-DSA-65 |
+| Equivalent to AES-192 / 3072-bit RSA classical security |
+| Quantum-resistant against Shor's algorithm attacks |
+
+### NIST FIPS 203 (ML-DSA / Kyber)
+
+| Vault key encapsulation uses Kyber512 |
+| Protects agent session keys against harvest-now-decrypt-later attacks |
+
+### Implementation
+
+| Liboqs (Open Quantum Safe) v0.15.0 |
+| Python wrapper: liboqs-python v0.16.0 |
+| Graceful fallback to classical encryption if liboqs unavailable |
 ---
 
 ### EU AI Act
